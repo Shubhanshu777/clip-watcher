@@ -40,7 +40,7 @@ def http_json(url: str, data: Dict[str, str]) -> Dict:
 def load_client() -> Dict:
     # CI: credentials come from environment variables (GitHub Actions secrets) instead of files.
     if os.environ.get("YT_CLIENT_ID") and os.environ.get("YT_CLIENT_SECRET"):
-        return {"client_id": os.environ["YT_CLIENT_ID"], "client_secret": os.environ["YT_CLIENT_SECRET"],
+        return {"client_id": os.environ["YT_CLIENT_ID"].strip(), "client_secret": os.environ["YT_CLIENT_SECRET"].strip(),
                 "auth_uri": "https://accounts.google.com/o/oauth2/v2/auth",
                 "token_uri": "https://oauth2.googleapis.com/token"}
     if not CLIENT_SECRET_PATH.exists():
@@ -90,7 +90,7 @@ def browser_sign_in(client: Dict) -> Dict:
 
 def access_token(client: Dict) -> str:
     if os.environ.get("YT_REFRESH_TOKEN"):
-        stored = {"refresh_token": os.environ["YT_REFRESH_TOKEN"]}
+        stored = {"refresh_token": os.environ["YT_REFRESH_TOKEN"].strip()}
     elif not TOKEN_PATH.exists():
         return browser_sign_in(client)["access_token"]
     else:
