@@ -1,0 +1,12 @@
+.DS_Store
+.venv/
+rec/
+clips/
+assets/
+bin/
+__pycache__/
+*.pyc
+.env
+client_secret*.json
+twitch.json
+youtube_token.json
