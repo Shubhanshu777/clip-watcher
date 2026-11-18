@@ -100,14 +100,21 @@ def download_and_polish(clip: Dict, streamer_login: str) -> Optional[Path]:
                    check=True)
 
     title = clip["title"].strip()
-    tags = ["#Shorts", f"#{streamer_login}", "#gaming", "#gameplay", "#streamerclips"]
+    # Streamer credit is OFF by default (set CREDIT_STREAMER=1 to add the source line and the streamer's tag).
+    credit_streamer = os.environ.get("CREDIT_STREAMER", "0") == "1"
+    tags = ["#Shorts", "#GTA6", "#GTAVI", "#gaming", "#gameplay", "#funnymoments", "#streamerclips"]
+    description_lines = [title, "", "🎮 The funniest and wildest GTA 6 moments, every hour.",
+                         "👍 Like and subscribe so you don't miss the next one."]
+    if credit_streamer:
+        tags.insert(1, f"#{streamer_login}")
+        description_lines += ["", f"Clip from {clip['broadcaster_name']}'s stream: {clip['url']}"]
+    description_lines += ["", " ".join(tags)]
     post = {
         "video": final_path.name,
         "youtube_title": f"{title} #Shorts"[:100],
-        "youtube_description": (f"{title}\n\nClip from {clip['broadcaster_name']}'s stream: {clip['url']}\n"
-                                f"Follow them: https://twitch.tv/{streamer_login}\n\n{' '.join(tags)}"),
+        "youtube_description": "\n".join(description_lines),
         "hashtags": tags,
-        "notes": "Auto-drafted from the Twitch clip title. Review it, add the game tags, and get the streamer's OK.",
+        "notes": "Auto-drafted from the Twitch clip title.",
     }
     final_path.with_suffix(".post.json").write_text(json.dumps(post, indent=2, ensure_ascii=False))
     return final_path
