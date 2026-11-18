@@ -1,7 +1,5 @@
-# Twitch logins of streamers who allow their clips to be reposted (one per line).
+# Twitch logins of streamers whose clips may be reposted (one per line).
 # autopost.py refuses to run while this list is empty.
-# Example:
-# xqc
-#
 # A line with just  *  means "the top 10 live streamers in the category right now" (no per-streamer
 # permission check). Only use it if you accept the copyright risk.
+*
